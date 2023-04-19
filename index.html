@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- (2018) copied from msuedu/u/528/ -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Vitaly<vital2580@icloud.com>">
+    <style>
+        body {
+            /*margin:50px !important;*/
+            background-color: black !important;
+            overflow: hidden;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .content {
+            display: inline-block;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 5px;
+            box-shadow: 0 0 10px grey;
+            transition: box-shadow .2s;
+        }
+
+        .content:hover {
+            box-shadow: 0 0 20px grey;
+        }
+
+        .content a {
+            color: #14ba0d;
+        }
+
+        h4 {
+            display: inline-block;
+        }
+
+    </style>
+    <title>528 home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body class="m-5">
+    <div class="content">
+        <h2 class="text-success">Explore Projects</h2>
+        <ul>
+            <li><a href="/QuickMath/">🔥Quick Math</a></li>
+            <li><a href="/ifinderBeta/">iFinder beta</a></li>
+            <li><a href="/elfinder/" class="text-danger">elFinder updated</a></li>
+            <li><a href="/newIfinder/" class="text-danger">new iFinder</a></li>
+            <li class="dropdown"><a class="text-cyan dropdown-toggle" href="#" data-toggle="dropdown">project 2017</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/project%202017/project_v0.4.html">v0.4</a>
+                    <a class="dropdown-item" href="/project%202017/project_with_cursor%20copy.html">with cursor</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        (function (canvas, config) {//nightgate
+            var ctx = canvas.getContext("2d"), green = config.greenStart, step = config.step, dots = []
+            function updateSize() {
+                canvas.width = document.documentElement.offsetWidth
+                canvas.height = document.documentElement.clientHeight
+            }
+            updateSize()
+            window.onresize = updateSize
+            function drawWorld(colorGreen) {
+                ctx.strokeStyle = config.linesColor
+                ctx.fillStyle = config.squaresColor
+                ctx.lineWidth = config.linesWidth
+                ctx.beginPath()
+                for (var y = step; y < canvas.height; y += step) {
+                    ctx.moveTo(0, y)
+                    ctx.lineTo(canvas.width, y)
+                }
+                for (var x = step; x < canvas.width; x += step) {
+                    ctx.moveTo(x, 0)
+                    ctx.lineTo(x, canvas.height)
+                }
+                ctx.stroke()//drawGrid
+                for (var x = step; x < canvas.width; x += step) {//draw squares on the grid
+                    for (var y = step; y < canvas.height; y += step) {
+                        var size = ctx.lineWidth
+                        var halfSize = size / 2
+                        ctx.fillRect(x - halfSize, y - halfSize, size, size)
+                    }
+                }
+            }
+            var dotAcceleration = 0.01
+            function update(time) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                drawWorld(config.greenMax)
+                ctx.fillStyle = config.dotsColor
+                dots = dots.map(function (dot) {
+                    var x = (time - dot.time) * dotAcceleration
+                    if (dot.x > canvas.width) return
+                    // if(dot.directionSwitch==dot.x*step && dot.direction)dot.direction = !dot.direction;
+                    ctx.beginPath()
+                    ctx.arc(x, dot.y * step, 2, 0, Math.PI * 2)
+                    ctx.fill()
+                    return dot
+                }).filter(Boolean)
+                requestAnimationFrame(update)
+            }
+            requestAnimationFrame(update)
+            setInterval(function () {
+                var speed = random(1, 3)
+                var y = random(1, Math.round(canvas.height / config.step))
+                dots.push({
+                    speed,
+                    y,
+                    time: performance.now()
+                })
+            }, 2000)
+        })(canvas, {
+            step: 60,
+            linesWidth: 2,
+            linesColor: "rgb(0, 50, 0)",
+            squaresColor: "#00ff83",
+            dotsColor: "#42ffbc"
+        })
+
+        function randomArr(arr) {
+            return arr[random(0, arr.length - 1)]
+        }
+
+        function random(min, max) {
+            return Math.round(Math.random() * (max - min) + min)
+        }
+            // window.onclick = e=>e.target.tagName=="A"?(e.preventDefault(), window.open(e.target.href)):1;
+    </script>
+</body>
+
+</html>
