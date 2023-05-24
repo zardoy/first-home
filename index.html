@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Vitaly<vital2580@icloud.com>">
     <style>
-        body {
-            /*margin:50px !important;*/
-            background-color: black !important;
+        html body {
+            margin: 3rem;
+            background-color: black;
             overflow: hidden;
         }
 
@@ -29,6 +29,17 @@
             transition: box-shadow .2s;
         }
 
+        @media (max-width: 500px) {
+            html body {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .content {
+                width: 100%;
+            }
+        }
+
         .content:hover {
             box-shadow: 0 0 20px grey;
         }
@@ -40,16 +51,20 @@
         h4 {
             display: inline-block;
         }
-
     </style>
     <title>528 home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
-<body class="m-5">
+<body>
     <div class="content">
-        <h2 class="text-success">Explore Projects</h2>
+        <h2 class="text-success">Explore Projects - web</h2>
+        <ul>
+            <li><a href="https://ts-plugin.zardoy.com/">TypeScript VS Code Plugin Site</a></li>
+        </ul>
+        <h3 class="text-success" style="margin-bottom: 0;">Dead Projects</h3>
+        <small class="text-success" style="opacity: 0.5;">(links to be restored soon)</small>
         <ul>
             <li><a href="/QuickMath/">🔥Quick Math</a></li>
             <li><a href="/ifinderBeta/">iFinder beta</a></li>
